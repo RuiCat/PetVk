@@ -4,13 +4,16 @@ import (
 	"fmt"
 	"reflect"
 	"unsafe"
+
+	// 处理错误
+	. "pet/error"
 )
 
 // Member 结构体成员信息定义
 type Member interface {
-	IsAny
+	Any
 	Name() string // 获取当前参数指向的成员名称
-	Value() IsAny // 返回当前值
+	Value() Any   // 返回当前值
 }
 
 // MemberHook 结构成员初始化拦截
@@ -20,21 +23,21 @@ type MemberHook interface {
 
 type member struct {
 	name  *string
-	value *IsAny
+	value *Any
 }
 
 func (v member) Name() string { return *v.name }
-func (v member) Value() IsAny { return *v.value }
+func (v member) Value() Any   { return *v.value }
 
 // NewMember 创建通用结构体成员定义
-func NewMember(name string) func(v IsAny) Member {
-	return func(v IsAny) Member {
+func NewMember(name string) func(v Any) Member {
+	return func(v Any) Member {
 		return &member{name: &name, value: &v}
 	}
 }
 
-// Peterror 构建结构体
-func Peterror[Out any](v ...Member) (out *Out, err error) {
+// Pattern 构建结构体
+func Pattern[Out any](v ...Member) (out *Out, err error) {
 	// 创建对象
 	out = new(Out)
 	// 反射
