@@ -6,14 +6,14 @@ import (
 	"unsafe"
 
 	// 处理错误
-	. "pet/error"
+	err "pet/error"
 )
 
 // Member 结构体成员信息定义
 type Member interface {
-	Any
-	Name() string // 获取当前参数指向的成员名称
-	Value() Any   // 返回当前值
+	err.Any
+	Name() string   // 获取当前参数指向的成员名称
+	Value() err.Any // 返回当前值
 }
 
 // MemberHook 结构成员初始化拦截
@@ -23,15 +23,15 @@ type MemberHook interface {
 
 type member struct {
 	name  *string
-	value *Any
+	value *err.Any
 }
 
-func (v member) Name() string { return *v.name }
-func (v member) Value() Any   { return *v.value }
+func (v member) Name() string   { return *v.name }
+func (v member) Value() err.Any { return *v.value }
 
 // NewMember 创建通用结构体成员定义
-func NewMember(name string) func(v Any) Member {
-	return func(v Any) Member {
+func NewMember(name string) func(v err.Any) Member {
+	return func(v err.Any) Member {
 		return &member{name: &name, value: &v}
 	}
 }
