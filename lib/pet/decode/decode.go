@@ -12,7 +12,7 @@ type Call[V any] func(this Decode[V], out V) bool
 type Decode[V any] interface {
 	errors.Transmit                         // 共用: 错误传递
 	Bind(t Type, fn func(t Type, v V) bool) // 共用: 绑定一个解析过程
-	Process(t Type, cdll Call[V]) bool      // 层级: 定义一个解析
+	Process(t Type, call Call[V]) bool      // 层级: 定义一个解析
 }
 
 // Coding 变长编码树
